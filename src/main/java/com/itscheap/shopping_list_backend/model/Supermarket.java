@@ -1,24 +1,23 @@
 package com.itscheap.shopping_list_backend.model;
 
+// JPA Entity for supermarkets
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-// JPA Entity for supermarkets
 @Entity
+@Table(name = "supermarket")
 public class Supermarket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Supermarket name, must be unique
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
-
-    // Optional: address, logo, etc. can be added
-
+    
     // Constructors
     public Supermarket() {
     }
