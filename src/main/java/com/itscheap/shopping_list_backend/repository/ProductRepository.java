@@ -1,12 +1,30 @@
 package com.itscheap.shopping_list_backend.repository;
 
-// Import JpaRepository from Spring Data JPA
+// Import the JpaRepository interface from Spring Data JPA
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.itscheap.shopping_list_backend.model.Product;
 
-// Interface for database operations on Product entities
-// Extends JpaRepository, providing built-in CRUD methods
+/**
+ * ProductRepository is a Spring Data JPA repository interface.
+ * 
+ * - Extends JpaRepository, which provides standard CRUD methods (save, findAll, delete, etc.)
+ * - Defines a custom query method to find products by name, ignoring case sensitivity.
+ */
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    // You can add custom queries here if needed later
+
+    /**
+     * Finds a Product by its name, ignoring case sensitivity.
+     *
+     * @param name The name of the product to search for.
+     * @return An Optional containing the Product if found, or empty if not found.
+     * 
+     * Spring Data JPA will automatically implement this method based on its name.
+     * It will generate the appropriate SQL: "SELECT * FROM products WHERE LOWER(name) = LOWER(?1)"
+     */
+    Optional<Product> findByNameIgnoreCase(String name);
+
+    // You can add more custom query methods here as needed!
 }

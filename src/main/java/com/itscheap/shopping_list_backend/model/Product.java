@@ -1,15 +1,19 @@
 package com.itscheap.shopping_list_backend.model;
 
-// Import JPA and validation packages
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
-// JPA class entity for ORM mapping
+// Marks this class as a JPA entity, mapped to a table named "product"
 @Entity
+@Table(name = "product")
 public class Product {
 
     // Primary key, auto-generated
@@ -17,47 +21,30 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Product name
+    // Name column, cannot be null
+    @Column(nullable = false, unique = true)
     private String name;
 
-    // Product price
-    private Double price;
+    // (Optional) OneToMany relationship for all prices related to this product
+    // CascadeType.ALL means if a product is deleted, its prices are too
+    // mappedBy must match the field name in ProductPrice
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductPrice> prices;
 
-    // Add relationship to Supermarket
-    @ManyToOne
-    @JoinColumn(name = "supermarket_id")
-    private Supermarket supermarket;
+    // Constructors
+    public Product() {}
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Product(String name) {
         this.name = name;
     }
 
-    public Double getPrice() {
-        return price;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public Supermarket getSupermarket() { 
-        return supermarket; 
-    }
-
-    public void setSupermarket(Supermarket supermarket) { 
-        this.supermarket = supermarket; 
-    }
+    public List<ProductPrice> getPrices() { return prices; }
+    public void setPrices(List<ProductPrice> prices) { this.prices = prices; }
 }
